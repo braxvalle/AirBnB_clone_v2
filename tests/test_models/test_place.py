@@ -1,79 +1,92 @@
 #!/usr/bin/python3
-""" module for state reviews"""
-import unittest
-import pep8
+""" """
+from tests.test_models.test_base_model import test_basemodel
 from models.place import Place
-from models.base_model import BaseModel
 import os
 
-class TestPlace(unittest.TestCase):
-    """ a class for testing Place"""
 
-    @classmethod
-    def setUpClass(cls):
-        """ Example Data """
-        cls.place = Place()
-        cls.place.city_id = "san-francisco"
-        cls.place.user_id = "madame-tabitha"
-        cls.place.name = "Gilded Lily"
-        cls.place.description = "A fragrant paradise where flowers bloom"
-        cls.place.number_rooms = 30
-        cls.place.number_bathrooms = 5
-        cls.place.max_guest = 3
-        cls.place.price_by_night = 500
-        cls.place.latitude = 37.77
-        cls.place.longitude = 122.42
-        cls.place.amenity_ids = ["1324-asdf"]
+class test_Place(test_basemodel):
+    """ place tests class"""
 
-    @classmethod
-    def teardown(cls):
-        """ tear down Class """
-        del cls.state
+    def __init__(self, *args, **kwargs):
+        """ init test class"""
+        super().__init__(*args, **kwargs)
+        self.name = "Place"
+        self.value = Place
 
-    def tearDown(self):
-        try:
-            os.remove('file.json')
-        except FileNotFoundError:
-            pass
+    def test_city_id(self):
+        """ testing place city_id attr"""
+        new = self.value()
+        self.assertEqual(type(new.city_id), str if
+                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                         type(None))
 
-    def test_Place_pep8(self):
-        """check for pep8 """
-        style = pep8.StyleGuide(quiet=True)
-        p = style.check_files(["models/state.py"])
-        self.assertEqual(p.total_errors, 0, 'fix Pep8')
+    def test_user_id(self):
+        """ testing place user_id attr"""
+        new = self.value()
+        self.assertEqual(type(new.user_id), str if
+                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                         type(None))
 
-    def test_Place_docs(self):
-        """ check for docstring """
-        self.assertIsNotNone(Place.__doc__)
+    def test_name(self):
+        """ testing place name attr"""
+        new = self.value()
+        self.assertEqual(type(new.name), str if
+                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                         type(None))
 
-    def test_Place_attribute_types(self):
-        """ test Place attribute types """
-        self.assertEqual(type(self.place.city_id), str)
-        self.assertEqual(type(self.place.user_id), str)
-        self.assertEqual(type(self.place.name), str)
-        self.assertEqual(type(self.place.description), str)
-        self.assertEqual(type(self.place.number_rooms), int)
-        self.assertEqual(type(self.place.number_bathrooms), int)
-        self.assertEqual(type(self.place.max_guest), int)
-        self.assertEqual(type(self.place.price_by_night), int)
-        self.assertEqual(type(self.place.latitude), float)
-        self.assertEqual(type(self.place.longitude), float)
-        self.assertEqual(type(self.place.amenity_ids), list)
+    def test_description(self):
+        """testing place description attr"""
+        new = self.value()
+        self.assertEqual(type(new.description), str if
+                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                         type(None))
 
-    def test_Place_is_subclass(self):
-        """ test if Place is subclass of BaseModel """
-        self.assertTrue(issubclass(self.place.__class__, BaseModel), True)
+    def test_number_rooms(self):
+        """ testing place number of rooms attr"""
+        new = self.value()
+        self.assertEqual(type(new.number_rooms), int if
+                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                         type(None))
 
-    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db", "Place won't\
-                     save because it needs to be tied to a User and State :\\")
-    def test_Place_save(self):
-        """ test save() command """
-        self.place.save()
-        self.assertNotEqual(self.place.created_at, self.place.updated_at)
+    def test_number_bathrooms(self):
+        """ testing place number of bathrooms attr"""
+        new = self.value()
+        self.assertEqual(type(new.number_bathrooms), int if
+                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                         type(None))
 
-    def test_Place_sa_instance_state(self):
-        """ test is _sa_instance_state has been removed """
-        self.assertNotIn('_sa_instance_state', self.place.to_dict())
+    def test_max_guest(self):
+        """ testing place max_guest attr"""
+        new = self.value()
+        self.assertEqual(type(new.max_guest), int if
+                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                         type(None))
 
-if __name__ == "__main__":
-    unittest.main()
+    def test_price_by_night(self):
+        """ testing place price by night attr"""
+        new = self.value()
+        self.assertEqual(type(new.price_by_night), int if
+                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                         type(None))
+
+    def test_latitude(self):
+        """ testing place latitud attr"""
+        new = self.value()
+        self.assertEqual(type(new.latitude), float if
+                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                         type(None))
+
+    def test_longitude(self):
+        """ testing place longitude attr"""
+        new = self.value()
+        self.assertEqual(type(new.latitude), float if
+                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                         type(None))
+
+    def test_amenity_ids(self):
+        """ testing amenity ids"""
+        new = self.value()
+        self.assertEqual(type(new.amenity_ids), list if
+                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                         type(None))
