@@ -1,43 +1,52 @@
 #!/usr/bin/python3
-""" """
-from tests.test_models.test_base_model import test_basemodel
+""" a module for user tests"""
+import unittest
+import pep8
 from models.user import User
 import os
 
 
-class test_User(test_basemodel):
-    """ test class for user model"""
+class TestUser(unittest.TestCase):
+    """ a class for user tests"""
 
-    def __init__(self, *args, **kwargs):
-        """ user test class init"""
-        super().__init__(*args, **kwargs)
-        self.name = "User"
-        self.value = User
+    @classmethod
+    def setUpClass(cls):
+        """ Example Data """
+        cls.user = User()
+        cls.user.first_name = "Madame"
+        cls.user.last_name = "Tabitha"
+        cls.user.email = "gildedlily@gmail.com"
+        cls.user.password = "gildedlily123"
 
-    def test_first_name(self):
-        """ testing user first anme attr"""
-        new = self.value()
-        self.assertEqual(type(new.first_name), str if
-                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
-                         type(None))
+    @classmethod
+    def teardown(cls):
+        """ Tear down the class """
+        del cls.user
 
-    def test_last_name(self):
-        """ testing user last name attr"""
-        new = self.value()
-        self.assertEqual(type(new.last_name), str if
-                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
-                         type(None))
+    def tearDown(self):
+        """ Tear down the file (file storage) """
+        try:
+            os.remove("file.json")
+        except FileNotFoundError:
+            pass
 
-    def test_email(self):
-        """ testing user email attr"""
-        new = self.value()
-        self.assertEqual(type(new.email), str if
-                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
-                         type(None))
+    def test_pep8_user(self):
+        """tests for pep8 """
+        style = pep8.StyleGuide(quiet=True)
+        p = style.check_files(["models/user.py"])
+        self.assertEqual(p.total_errors, 0, 'fix Pep8')
 
-    def test_password(self):
-        """ testing user password attr"""
-        new = self.value()
-        self.assertEqual(type(new.password), str if
-                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
-                         type(None))
+    def test_docs_user(self):
+        """ check for docstrings """
+        self.assertIsNotNone(User.__doc__)
+
+    def test_attribute_types_User(self):
+        """test attribute type for User"""
+        self.assertEqual(type(self.user.email), str)
+        self.assertEqual(type(self.user.password), str)
+        self.assertEqual(type(self.user.first_name), str)
+        self.assertEqual(type(self.user.first_name), str)
+
+
+if __name__ == "__main__":
+    unittest.main()
